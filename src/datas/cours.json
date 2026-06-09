@@ -12,5 +12,12 @@
     "description": "Post-appendicite · Abdos protégés · Pectoraux · Dos · Épaules · Bras",
     "duree": "1h30",
     "fichier": "cours/seance_haut_corps.html"
+  },
+  {
+    "id": 3,
+    "titre": "Cardio et explosivité",
+    "description": "Endurance · Explosivité · Cheville protégée · Abdos préservés",
+    "duree": "1h30",
+    "fichier": "cours/seance_cardio_explosivite.html"
   }
 ]

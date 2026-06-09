@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séance Cardio — Basic Fit Saint-Égrève</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --accent: #e8ff47;
+    --red: #ff4444;
+    --grey: #1a1a1a;
+    --grey2: #2a2a2a;
+    --muted: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--grey);
+    padding: 32px 24px 28px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+  h1 a { color: inherit; text-decoration: none; }
+  h1 a:hover em { text-decoration: underline; }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .gym-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(232,255,71,0.12);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .duration-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .duration-badge span { color: var(--accent); }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 10vw, 72px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .subtitle {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 20px;
+  }
+  .progress-seg {
+    height: 4px;
+    border-radius: 2px;
+    flex: 1;
+    background: var(--grey2);
+    transition: background 0.3s;
+  }
+  .progress-seg.active { background: var(--accent); }
+
+  /* SECTIONS */
+  .section {
+    margin: 24px 16px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--accent);
+    line-height: 1;
+    opacity: 0.3;
+  }
+  .section-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .section-info p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .section-time {
+    margin-left: auto;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--muted);
+    background: var(--grey2);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--grey);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+    transition: transform 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card:active { transform: scale(0.98); }
+  .card.cardio-card   { border-left-color: #4af; }
+  .card.warmup-card   { border-left-color: #fa8; }
+  .card.hiit-card     { border-left-color: #f55; }
+  .card.endurance-card{ border-left-color: #4d4; }
+  .card.explo-card    { border-left-color: #f90; }
+  .card.done { opacity: 0.5; }
+  .card.done .card-name { text-decoration: line-through; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-cardio    { background: rgba(68,170,255,0.15); }
+  .icon-warmup    { background: rgba(255,170,100,0.15); }
+  .icon-hiit      { background: rgba(255,80,80,0.15); }
+  .icon-endurance { background: rgba(68,220,68,0.12); }
+  .icon-explo     { background: rgba(255,150,0,0.15); }
+
+  .card-body { flex: 1; }
+  .card-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .card-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .badge-sets     { background: rgba(232,255,71,0.15); color: var(--accent); }
+  .badge-reps     { background: rgba(255,255,255,0.08); color: var(--white); }
+  .badge-rest     { background: rgba(255,68,68,0.12); color: #ff8888; }
+  .badge-time     { background: rgba(68,170,255,0.12); color: #7ae; }
+  .badge-effort   { background: rgba(255,150,0,0.12); color: #fba; }
+
+  /* INTERVAL TABLE */
+  .interval-block {
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .interval-block.blue  { background: linear-gradient(135deg, rgba(68,170,255,0.08), rgba(68,170,255,0.03)); border: 1px solid rgba(68,170,255,0.2); }
+  .interval-block.red   { background: linear-gradient(135deg, rgba(255,80,80,0.08), rgba(255,80,80,0.03));   border: 1px solid rgba(255,80,80,0.2); }
+  .interval-block.green { background: linear-gradient(135deg, rgba(68,220,68,0.08), rgba(68,220,68,0.03));   border: 1px solid rgba(68,220,68,0.2); }
+  .interval-block.orange{ background: linear-gradient(135deg, rgba(255,150,0,0.08), rgba(255,150,0,0.03));   border: 1px solid rgba(255,150,0,0.2); }
+
+  .interval-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .interval-block.blue h3   { color: #4af; }
+  .interval-block.red h3    { color: #f55; }
+  .interval-block.green h3  { color: #4d4; }
+  .interval-block.orange h3 { color: #f90; }
+
+  .interval-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+    gap: 8px;
+  }
+  .interval-row:last-child { border-bottom: none; }
+  .interval-row .time-col  { color: var(--muted); flex-shrink: 0; min-width: 56px; }
+  .interval-row .desc-col  { flex: 1; }
+  .interval-row .intensity-col { font-weight: 700; font-size: 12px; flex-shrink: 0; padding: 2px 8px; border-radius: 10px; }
+
+  .int-low    { background: rgba(68,220,68,0.15);  color: #4d4; }
+  .int-med    { background: rgba(232,255,71,0.15); color: var(--accent); }
+  .int-high   { background: rgba(255,150,0,0.15);  color: #f90; }
+  .int-max    { background: rgba(255,68,68,0.15);  color: #f55; }
+  .int-rest   { background: rgba(136,136,136,0.15);color: var(--muted); }
+
+  /* ZONES FC */
+  .zone-bar-wrap {
+    margin: 12px 16px 0;
+    background: var(--grey);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .zone-bar-wrap h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .zone-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+    font-size: 12px;
+  }
+  .zone-label { width: 80px; color: var(--muted); flex-shrink: 0; }
+  .zone-bar-bg { flex: 1; height: 6px; background: var(--grey2); border-radius: 3px; overflow: hidden; }
+  .zone-bar-fill { height: 100%; border-radius: 3px; }
+  .zone-val { width: 38px; text-align: right; font-weight: 600; font-size: 11px; flex-shrink: 0; }
+
+  /* TIPS */
+  .tip-box {
+    background: rgba(170,130,255,0.08);
+    border: 1px solid rgba(170,130,255,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 16px 0;
+    font-size: 12px;
+    color: #c8b0ff;
+    line-height: 1.6;
+  }
+  .tip-box strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #a8f;
+  }
+  .warn-box {
+    background: rgba(255,68,68,0.07);
+    border: 1px solid rgba(255,68,68,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 16px 0;
+    font-size: 12px;
+    color: #ffaaaa;
+    line-height: 1.6;
+  }
+  .warn-box strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  /* TOTAL */
+  .total-bar {
+    margin: 24px 16px 0;
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--black);
+  }
+  .total-bar span:first-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+  .total-bar span:last-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    height: 1px;
+    background: var(--grey2);
+    margin: 8px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← Retour</a>
+  <div class="header-top">
+    <div class="gym-tag">📍 Basic Fit — Saint-Égrève</div>
+    <div class="duration-badge"><span>~1h</span>30</div>
+  </div>
+  <h1><a href="/">CARDIO<br><em>EXPLOSIVITÉ</em></a></h1>
+  <div class="subtitle">Endurance · Explosivité · Cheville protégée · Abdos préservés</div>
+  <div class="progress-bar">
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+</div>
+
+<!-- DOUBLE ALERTE -->
+<div class="warn-box">
+  <strong>⚠️ Contraintes à respecter toute la séance</strong>
+  <strong style="color:#f90; margin-top:6px">🦶 Cheville :</strong> Aucun saut, aucun impact latéral brusque. Les exercices d'explosivité sont adaptés sur machines (vélo, rameur). Si douleur à la cheville, stoppe immédiatement.<br><br>
+  <strong style="color:#f90; margin-top:4px">🩹 Abdos :</strong> Éviter tout gainage prolongé, sprints debout avec forte flexion du tronc, ou exercices qui compriment la cicatrice. Les efforts intenses sont portés par les jambes et le cardio respiratoire, pas par le core.
+</div>
+
+<div class="total-bar">
+  <span>🔥 DURÉE TOTALE</span>
+  <span>~1H30</span>
+</div>
+
+<!-- ZONES FC REF -->
+<div class="zone-bar-wrap">
+  <h4>📊 Zones fréquence cardiaque cibles (FC max ≈ 220 − âge)</h4>
+  <div class="zone-row">
+    <span class="zone-label">Z2 · Endurance</span>
+    <div class="zone-bar-bg"><div class="zone-bar-fill" style="width:55%; background:#4d4;"></div></div>
+    <span class="zone-val" style="color:#4d4">60–70%</span>
+  </div>
+  <div class="zone-row">
+    <span class="zone-label">Z3 · Tempo</span>
+    <div class="zone-bar-bg"><div class="zone-bar-fill" style="width:72%; background:#e8ff47;"></div></div>
+    <span class="zone-val" style="color:#e8ff47">70–80%</span>
+  </div>
+  <div class="zone-row">
+    <span class="zone-label">Z4 · Seuil</span>
+    <div class="zone-bar-bg"><div class="zone-bar-fill" style="width:85%; background:#f90;"></div></div>
+    <span class="zone-val" style="color:#f90">80–90%</span>
+  </div>
+  <div class="zone-row">
+    <span class="zone-label">Z5 · Max</span>
+    <div class="zone-bar-bg"><div class="zone-bar-fill" style="width:100%; background:#f55;"></div></div>
+    <span class="zone-val" style="color:#f55">90–100%</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 1 : ÉCHAUFFEMENT -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <h2>Échauffement</h2>
+      <p>Activation cardiovasculaire progressive · Mobilité</p>
+    </div>
+    <div class="section-time">10 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🚴</div>
+      <div class="card-body">
+        <div class="card-name">Vélo stationnaire — montée progressive</div>
+        <div class="card-detail">Position assise, rythme de pédalage régulier. Augmenter la résistance toutes les 2 min. Objectif : atteindre la zone 2 (60–70% FCmax) sans forcer. Corps qui se réveille doucement.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 7 min</span>
+          <span class="badge badge-effort">Z2 → 60–70% FCmax</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🔄</div>
+      <div class="card-body">
+        <div class="card-name">Mobilité dynamique haut du corps</div>
+        <div class="card-detail">Cercles d'épaules, rotations de nuque, ouvertures de poitrine. Debout, mouvements fluides. Prépare le système cardiovasculaire à l'effort sans solliciter les abdos ni la cheville.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 3 min</span>
+          <span class="badge badge-rest">Pas de repos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 2 : ENDURANCE DE BASE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <h2>Endurance de base</h2>
+      <p>Zone 2–3 · Construire le moteur aérobie</p>
+    </div>
+    <div class="section-time">25 MIN</div>
+  </div>
+
+  <div class="tip-box" style="margin: 0 0 12px;">
+    <strong>💡 Pourquoi la zone 2 ?</strong>
+    L'endurance de base (Z2) développe les mitochondries et la capacité aérobie — le socle indispensable avant de travailler l'explosivité. Tu dois pouvoir parler par phrases courtes sans t'essouffler.
+  </div>
+
+  <div class="interval-block green" onclick="toggleDone(this)" style="cursor:pointer">
+    <h3>🚴 Vélo stationnaire — Endurance continue Z2/Z3</h3>
+    <div class="interval-row">
+      <span class="time-col">0–5 min</span>
+      <span class="desc-col">Régime stable — cadence 80–90 rpm</span>
+      <span class="intensity-col int-low">Z2</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">5–10 min</span>
+      <span class="desc-col">Légère hausse résistance — maintenir la cadence</span>
+      <span class="intensity-col int-med">Z3</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">10–15 min</span>
+      <span class="desc-col">Effort soutenu confortable — respiration contrôlée</span>
+      <span class="intensity-col int-med">Z3</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">15–20 min</span>
+      <span class="desc-col">Retour en Z2 — baisser légèrement la résistance</span>
+      <span class="intensity-col int-low">Z2</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">20–25 min</span>
+      <span class="desc-col">Alternance libre Z2/Z3 selon les sensations</span>
+      <span class="intensity-col int-med">Z2/Z3</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 3 : EXPLOSIVITÉ VÉLO -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <h2>Explosivité — Vélo</h2>
+      <p>Sprints assis · Z4/Z5 · Cheville protégée</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="tip-box" style="margin: 0 0 12px;">
+    <strong>⚡ Principe des sprints assis</strong>
+    Rester assis en permanence sur le vélo — ne JAMAIS se lever sur les pédales (pression sur la cicatrice et instabilité cheville). L'explosivité vient de la puissance des cuisses et de la fréquence de pédalage, pas du poids du corps.
+  </div>
+
+  <div class="interval-block red" onclick="toggleDone(this)" style="cursor:pointer">
+    <h3>⚡ Sprints assis — 8 × 20 sec / 40 sec récup</h3>
+    <div class="interval-row">
+      <span class="time-col">0–2 min</span>
+      <span class="desc-col">Activation — montée progressive Z3</span>
+      <span class="intensity-col int-med">Z3</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">Sprint</span>
+      <span class="desc-col">20 sec à fond — max cadence assis, résistance 7/10</span>
+      <span class="intensity-col int-max">Z5 MAX</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">Récup</span>
+      <span class="desc-col">40 sec pédalage très lent — souffler, récupérer</span>
+      <span class="intensity-col int-rest">Récup</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">× 8</span>
+      <span class="desc-col">Répéter sprint / récup (≈ 8 min)</span>
+      <span class="intensity-col int-high">Z4/Z5</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">Fin</span>
+      <span class="desc-col">3–4 min pédalage récup à Z2 pour stabiliser le cœur</span>
+      <span class="intensity-col int-low">Z2</span>
+    </div>
+    <div class="card-badges" style="margin-top:12px">
+      <span class="badge badge-sets">8 sprints</span>
+      <span class="badge badge-time">⏱ 20 sec effort</span>
+      <span class="badge badge-rest">⏸ 40 sec récup</span>
+    </div>
+  </div>
+
+  <div class="interval-block orange" onclick="toggleDone(this)" style="cursor:pointer; margin-top:10px">
+    <h3>🔥 Tabata assis — 4 × (20 sec max / 10 sec stop)</h3>
+    <div class="interval-row">
+      <span class="time-col">Effort</span>
+      <span class="desc-col">20 sec pédalage maximal — vitesse et puissance</span>
+      <span class="intensity-col int-max">MAX</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">Stop</span>
+      <span class="desc-col">10 sec arrêt complet ou très lent</span>
+      <span class="intensity-col int-rest">Stop</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">× 4</span>
+      <span class="desc-col">4 répétitions = 2 min intenses · Repos 2 min entre séries</span>
+      <span class="intensity-col int-high">Z5</span>
+    </div>
+    <div class="card-badges" style="margin-top:12px">
+      <span class="badge badge-sets">4 séries</span>
+      <span class="badge badge-time">⏱ 2 min / série</span>
+      <span class="badge badge-rest">⏸ Repos 2 min entre séries</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 4 : RAMEUR ENDURANCE + EXPLOSIVITÉ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <h2>Rameur</h2>
+      <p>Endurance + Puissance · Aucun impact cheville</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="tip-box" style="margin: 0 0 12px;">
+    <strong>💡 Technique rameur — abdos préservés</strong>
+    La poussée vient des jambes (70%), le dos bascule légèrement en arrière (20%), les bras terminent (10%). Ne pas hyper-fléchir le tronc en avant ni tirer violemment avec le dos. Mouvement fluide et contrôlé.
+  </div>
+
+  <div class="interval-block blue" onclick="toggleDone(this)" style="cursor:pointer">
+    <h3>🚣 Rameur — Endurance tempo</h3>
+    <div class="interval-row">
+      <span class="time-col">0–3 min</span>
+      <span class="desc-col">Technique + activation — cadence 20 coups/min</span>
+      <span class="intensity-col int-low">Z2</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">3–8 min</span>
+      <span class="desc-col">Endurance stable — 22–24 coups/min, effort régulier</span>
+      <span class="intensity-col int-med">Z3</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">8–10 min</span>
+      <span class="desc-col">Récup active — cadence basse, souffler</span>
+      <span class="intensity-col int-rest">Récup</span>
+    </div>
+    <div class="card-badges" style="margin-top:12px">
+      <span class="badge badge-time">⏱ 10 min</span>
+      <span class="badge badge-effort">Z2/Z3 · 60–75% FCmax</span>
+    </div>
+  </div>
+
+  <div class="interval-block red" onclick="toggleDone(this)" style="cursor:pointer; margin-top:10px">
+    <h3>⚡ Rameur — Intervalles de puissance</h3>
+    <div class="interval-row">
+      <span class="time-col">Effort</span>
+      <span class="desc-col">30 sec à puissance maximale — pousser fort avec les jambes</span>
+      <span class="intensity-col int-max">Z5 MAX</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">Récup</span>
+      <span class="desc-col">1 min rameur lent ou arrêt — récupération active</span>
+      <span class="intensity-col int-rest">Récup</span>
+    </div>
+    <div class="interval-row">
+      <span class="time-col">× 6</span>
+      <span class="desc-col">6 séries — maintenir la puissance sur chaque sprint</span>
+      <span class="intensity-col int-high">Z4/Z5</span>
+    </div>
+    <div class="card-badges" style="margin-top:12px">
+      <span class="badge badge-sets">6 séries</span>
+      <span class="badge badge-time">⏱ 30 sec effort</span>
+      <span class="badge badge-rest">⏸ 1 min récup</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 5 : RETOUR AU CALME -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <h2>Retour au calme</h2>
+      <p>Descente FC · Étirements · Récupération</p>
+    </div>
+    <div class="section-time">15 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🚴</div>
+      <div class="card-body">
+        <div class="card-name">Vélo — descente progressive de FC</div>
+        <div class="card-detail">Résistance très faible, cadence libre. Laisser le cœur redescendre sous 100 bpm avant de s'arrêter. Ne jamais stopper d'un coup après un effort intense.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 5 min</span>
+          <span class="badge badge-effort">Z1 · &lt; 60% FCmax</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirements quadriceps & ischio-jambiers</div>
+        <div class="card-detail">Debout ou allongé. Maintenir chaque étirement sans rebond. Les muscles sollicités par le vélo et le rameur ont besoin de ce relâchement pour récupérer efficacement.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 40 sec / groupe</span>
+          <span class="badge badge-sets">2 fois chaque</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🌊</div>
+      <div class="card-body">
+        <div class="card-name">Étirements mollets + mobilité cheville douce</div>
+        <div class="card-detail">Talon au sol, pointe contre un mur ou une marche. Léger étirement du mollet et du tendon d'Achille. Terminer par des cercles de cheville très doux pour drainer et assouplir.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirement dorsaux & ouverture poitrine</div>
+        <div class="card-detail">Bras tendu contre un montant, rotation douce du buste. Puis croiser les bras dans le dos et ouvrir la poitrine. Relâcher les tensions accumulées par le rameur.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECAP -->
+<div class="total-bar" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+  <span style="font-size:14px; font-weight:600; letter-spacing:0.5px;">📋 RÉCAPITULATIF</span>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; width:100%; font-family:'DM Sans',sans-serif; font-size:13px;">
+    <div>🔥 Échauffement</div><div style="text-align:right">10 min</div>
+    <div>🟢 Endurance de base (vélo)</div><div style="text-align:right">25 min</div>
+    <div>⚡ Explosivité (vélo sprints + tabata)</div><div style="text-align:right">20 min</div>
+    <div>🚣 Rameur (endurance + puissance)</div><div style="text-align:right">20 min</div>
+    <div>🧘 Retour au calme</div><div style="text-align:right">15 min</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; font-family:'Bebas Neue',sans-serif; font-size:18px;">TOTAL</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; text-align:right; font-family:'Bebas Neue',sans-serif; font-size:18px;">~1H30</div>
+  </div>
+</div>
+
+<div class="tip-box" style="margin-top:16px">
+  <strong>💡 Conseils récupération</strong>
+  Bois 500 ml d'eau minimum pendant la séance. Mange dans l'heure qui suit (protéines + glucides). Si la cheville gonfle légèrement après les sprints vélo, glace 10 min. Pour progresser sur l'explosivité, répéter cette séance 2× par semaine avec 48h de repos entre chaque.
+</div>
+
+<script>
+  function toggleDone(card) {
+    card.classList.toggle('done');
+    const allCards = document.querySelectorAll('.card, .interval-block[onclick]');
+    const doneCards = document.querySelectorAll('.card.done, .interval-block.done');
+    const segs = document.querySelectorAll('.progress-seg');
+    const ratio = doneCards.length / allCards.length;
+    const activeCount = Math.round(ratio * segs.length);
+    segs.forEach((seg, i) => seg.classList.toggle('active', i < activeCount));
+  }
+</script>
+</body>
+</html>
