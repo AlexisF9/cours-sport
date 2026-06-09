@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séance Haut du Corps — Basic Fit Saint-Égrève</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --accent: #e8ff47;
+    --red: #ff4444;
+    --grey: #1a1a1a;
+    --grey2: #2a2a2a;
+    --muted: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--grey);
+    padding: 32px 24px 28px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+  h1 a { color: inherit; text-decoration: none; }
+  h1 a:hover em { text-decoration: underline; }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .gym-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(232,255,71,0.12);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .duration-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .duration-badge span { color: var(--accent); }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 10vw, 72px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .subtitle {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 20px;
+  }
+  .progress-seg {
+    height: 4px;
+    border-radius: 2px;
+    flex: 1;
+    background: var(--grey2);
+    transition: background 0.3s;
+  }
+  .progress-seg.active { background: var(--accent); }
+
+  /* SECTIONS */
+  .section {
+    margin: 24px 16px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--accent);
+    line-height: 1;
+    opacity: 0.3;
+  }
+  .section-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .section-info p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .section-time {
+    margin-left: auto;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--muted);
+    background: var(--grey2);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--grey);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+    transition: transform 0.15s, border-color 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card:active { transform: scale(0.98); }
+  .card.cardio-card  { border-left-color: #4af; }
+  .card.warmup-card  { border-left-color: #fa8; }
+  .card.strength-card{ border-left-color: var(--accent); }
+  .card.rehab-card   { border-left-color: #a8f; }
+  .card.warning-card { border-left-color: var(--red); }
+  .card.done { opacity: 0.5; }
+  .card.done .card-name { text-decoration: line-through; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-cardio   { background: rgba(68,170,255,0.15); }
+  .icon-warmup   { background: rgba(255,170,100,0.15); }
+  .icon-strength { background: rgba(232,255,71,0.12); }
+  .icon-rehab    { background: rgba(170,130,255,0.15); }
+  .icon-warning  { background: rgba(255,68,68,0.15); }
+
+  .card-body { flex: 1; }
+  .card-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .card-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .badge-sets { background: rgba(232,255,71,0.15); color: var(--accent); }
+  .badge-reps { background: rgba(255,255,255,0.08); color: var(--white); }
+  .badge-rest { background: rgba(255,68,68,0.12); color: #ff8888; }
+  .badge-time { background: rgba(68,170,255,0.12); color: #7ae; }
+  .badge-warn { background: rgba(255,68,68,0.18); color: #ff8888; }
+
+  /* CARDIO BLOCK */
+  .cardio-block {
+    background: linear-gradient(135deg, rgba(68,170,255,0.08), rgba(68,170,255,0.03));
+    border: 1px solid rgba(68,170,255,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .cardio-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #4af;
+    margin-bottom: 8px;
+  }
+  .cardio-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+  .cardio-row:last-child { border-bottom: none; }
+  .cardio-row span:first-child { color: var(--muted); }
+  .cardio-row span:last-child { font-weight: 600; color: #7ae; }
+
+  /* TIPS */
+  .tip-box {
+    background: rgba(170,130,255,0.08);
+    border: 1px solid rgba(170,130,255,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 16px 0;
+    font-size: 12px;
+    color: #c8b0ff;
+    line-height: 1.6;
+  }
+  .tip-box strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #a8f;
+  }
+
+  .warn-box {
+    background: rgba(255,68,68,0.07);
+    border: 1px solid rgba(255,68,68,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 16px 0;
+    font-size: 12px;
+    color: #ffaaaa;
+    line-height: 1.6;
+  }
+  .warn-box strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  /* TOTAL */
+  .total-bar {
+    margin: 24px 16px 0;
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--black);
+  }
+  .total-bar span:first-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+  .total-bar span:last-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+  }
+
+  /* MUSCLES TAG */
+  .muscles-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 16px 0;
+  }
+  .muscle-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(232,255,71,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(232,255,71,0.2);
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    height: 1px;
+    background: var(--grey2);
+    margin: 8px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← Retour</a>
+  <div class="header-top">
+    <div class="gym-tag">📍 Basic Fit — Saint-Égrève</div>
+    <div class="duration-badge"><span>~1h</span>30</div>
+  </div>
+  <h1><a href="/">HAUT DU<br><em>CORPS</em></a></h1>
+  <div class="subtitle">Post-appendicite · Abdos protégés · Pectoraux · Dos · Épaules · Bras</div>
+  <div class="progress-bar">
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+</div>
+
+<!-- ALERTE -->
+<div class="warn-box">
+  <strong>⚠️ Post-opératoire — À lire avant de commencer</strong>
+  Tous les exercices ci-dessous ont été sélectionnés pour éviter toute contraction abdominale intense. Évite absolument les tractions, dips, développé debout avec barre, et tout mouvement qui comprime ou étire la cicatrice. En cas de douleur ou tiraillement à l'abdomen, arrête immédiatement. Demande l'accord de ton médecin si l'opération date de moins de 6 semaines.
+</div>
+
+<!-- MUSCLES TRAVAILLÉS -->
+<div class="muscles-row">
+  <span class="muscle-tag">Pectoraux</span>
+  <span class="muscle-tag">Dos (dorsaux)</span>
+  <span class="muscle-tag">Épaules</span>
+  <span class="muscle-tag">Biceps</span>
+  <span class="muscle-tag">Triceps</span>
+  <span class="muscle-tag">Trapèzes</span>
+</div>
+
+<!-- TOTAL -->
+<div class="total-bar">
+  <span>🔥 DURÉE TOTALE</span>
+  <span>~1H30</span>
+</div>
+
+<!-- BLOC 1 : ÉCHAUFFEMENT -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <h2>Échauffement</h2>
+      <p>Mobilité épaules · Activation légère · Cardio assis</p>
+    </div>
+    <div class="section-time">10 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🚴</div>
+      <div class="card-body">
+        <div class="card-name">Vélo stationnaire — position droite</div>
+        <div class="card-detail">Intensité très faible. Mains sur le guidon, dos droit. Zéro sollicitation abdominale. Permet d'élever la température corporelle sans contrainte sur la cicatrice.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 5 min</span>
+          <span class="badge badge-rest">Résistance 2–3/10</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🔄</div>
+      <div class="card-body">
+        <div class="card-name">Cercles d'épaules & rotations du buste</div>
+        <div class="card-detail">Debout ou assis. Grands cercles d'épaules vers l'avant puis l'arrière. Rotations lentes du haut du buste (sans torsion forcée des hanches). Mobiliser les coudes et poignets.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">2 séries</span>
+          <span class="badge badge-reps">15 rép. chaque sens</span>
+          <span class="badge badge-rest">Pas de repos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">💨</div>
+      <div class="card-body">
+        <div class="card-name">Band pull-apart avec élastique léger</div>
+        <div class="card-detail">Élastique tendu devant soi, bras à hauteur des épaules. Écarter les bras en ouvrant la poitrine. Active les rhomboïdes et les rotateurs de l'épaule sans aucune tension abdominale.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">2 séries</span>
+          <span class="badge badge-reps">20 rép.</span>
+          <span class="badge badge-rest">Repos 30 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 2 : CARDIO -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <h2>Cardio</h2>
+      <p>Assis · Impact zéro sur l'abdomen</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="cardio-block">
+    <h3>🚴 Vélo stationnaire — Intervalles assis</h3>
+    <div class="cardio-row"><span>0–3 min</span><span>Échauffement — résistance 2/10</span></div>
+    <div class="cardio-row"><span>3–6 min</span><span>Effort modéré — résistance 5/10</span></div>
+    <div class="cardio-row"><span>6–8 min</span><span>Récup active — résistance 2/10</span></div>
+    <div class="cardio-row"><span>8–11 min</span><span>Effort soutenu — résistance 6/10</span></div>
+    <div class="cardio-row"><span>11–13 min</span><span>Récup active — résistance 2/10</span></div>
+    <div class="cardio-row"><span>13–16 min</span><span>Effort soutenu — résistance 6/10</span></div>
+    <div class="cardio-row"><span>16–18 min</span><span>Effort modéré — résistance 4/10</span></div>
+    <div class="cardio-row"><span>18–20 min</span><span>Retour au calme — résistance 2/10</span></div>
+  </div>
+
+  <div class="tip-box">
+    <strong>⚠️ Important</strong>
+    Rester assis tout le long, ne pas se lever sur les pédales. Éviter le rameur (compression abdominale trop forte à la traction). Éviter l'elliptique si tu ressens des tiraillements.
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 3 : PECTORAUX -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <h2>Pectoraux</h2>
+      <p>Machines & câbles · Abdos non sollicités</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🏋️</div>
+      <div class="card-body">
+        <div class="card-name">Pec Deck machine (butterfly)</div>
+        <div class="card-detail">Assis, dos calé contre le dossier, coudes sur les appuis. Ramener les bras devant soi en contractant les pectoraux. Mouvement guidé = aucun gainage nécessaire. Idéal post-op.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">💪</div>
+      <div class="card-body">
+        <div class="card-name">Développé couché machine (guidé)</div>
+        <div class="card-detail">Assis ou allongé selon la machine. Dos bien plaqué, ne pas cambrer. Pousser lentement, contrôler la descente sur 3 sec. Évite le développé à la barre libre qui requiert du gainage.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">10 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">〰️</div>
+      <div class="card-body">
+        <div class="card-name">Écarté câble croisé (crossover bas vers haut)</div>
+        <div class="card-detail">Câbles en position basse, bras légèrement fléchis. Croiser les mains devant la poitrine en arc de cercle. Rester stable, ne pas déhancher. Finition pectoraux en isolation.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 4 : DOS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <h2>Dos</h2>
+      <p>Dorsaux · Rhomboïdes · Trapèzes</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🔽</div>
+      <div class="card-body">
+        <div class="card-name">Lat Pulldown (tirage vertical machine)</div>
+        <div class="card-detail">Assis, cuisses bloquées sous le pad. Tirer la barre vers le menton en ouvrant les coudes. Contrôler la remontée. Le torse reste droit — ne pas se pencher en arrière (évite l'engagement abdominal).</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">↩️</div>
+      <div class="card-body">
+        <div class="card-name">Rowing machine assis (câble ou machine)</div>
+        <div class="card-detail">Assis, dos droit et légèrement incliné (10–15°). Tirer vers le nombril en serrant les omoplates. Éviter de tirer avec une forte inclinaison du dos qui engagerait les abdos. Charge modérée.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🤏</div>
+      <div class="card-body">
+        <div class="card-name">Tirage unilatéral haltère sur banc incliné</div>
+        <div class="card-detail">Un genou et une main sur le banc, dos horizontal. Tirer l'haltère vers la hanche en contractant le grand dorsal. Position stable et sécurisée — zéro tension abdominale.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">12 rép. / bras</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 5 : ÉPAULES + BRAS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <h2>Épaules & Bras</h2>
+      <p>Deltoïdes · Biceps · Triceps</p>
+    </div>
+    <div class="section-time">15 MIN</div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🔝</div>
+      <div class="card-body">
+        <div class="card-name">Élévations latérales haltères — assis</div>
+        <div class="card-detail">Assis sur un banc, dos droit. Lever les bras latéralement jusqu'à hauteur des épaules. La position assise neutralise le balancement du tronc et protège la sangle abdominale.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">💪</div>
+      <div class="card-body">
+        <div class="card-name">Curl biceps haltères — assis sur banc incliné</div>
+        <div class="card-detail">Assis, bras le long du corps. Fléchir les coudes alternativement. La position assise évite de cambrer ou de tricher avec le dos. Prise neutre ou supination.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🔻</div>
+      <div class="card-body">
+        <div class="card-name">Triceps pushdown câble (corde ou barre V)</div>
+        <div class="card-detail">Debout ou assis, coudes collés au corps. Pousser la corde vers le bas en contractant les triceps. Rester gainé légèrement mais sans effort : le mouvement est porté par les bras seuls.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 6 : RETOUR AU CALME -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <h2>Retour au calme</h2>
+      <p>Étirements doux · Mobilité · Récupération</p>
+    </div>
+    <div class="section-time">5 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirement pectoraux à l'encadrure</div>
+        <div class="card-detail">Bras plié à 90°, avant-bras contre un montant. Rotation douce du buste vers l'opposé. Ressentir l'ouverture de la poitrine. Sans forcer sur le ventre.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirement dorsaux — bras tendu, rotation</div>
+        <div class="card-detail">Saisir un montant ou câble à hauteur d'épaule, laisser le poids du corps tirer le grand dorsal. Ressentir l'étirement du flanc sans tordre l'abdomen.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🌊</div>
+      <div class="card-body">
+        <div class="card-name">Étirement biceps & avant-bras debout</div>
+        <div class="card-detail">Bras tendu, paume vers le haut, tirer doucement les doigts vers l'arrière avec l'autre main. Puis alterner paume vers le bas. Dénouer les tensions des avant-bras.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 20 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECAP -->
+<div class="total-bar" style="margin-top:24px; flex-direction: column; align-items: flex-start; gap: 10px;">
+  <span style="font-size:14px; font-weight:600; letter-spacing:0.5px;">📋 RÉCAPITULATIF</span>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; width:100%; font-family:'DM Sans',sans-serif; font-size:13px;">
+    <div>🔥 Échauffement</div><div style="text-align:right">10 min</div>
+    <div>🚴 Cardio vélo</div><div style="text-align:right">20 min</div>
+    <div>💪 Pectoraux</div><div style="text-align:right">20 min</div>
+    <div>🔽 Dos</div><div style="text-align:right">20 min</div>
+    <div>🔝 Épaules & Bras</div><div style="text-align:right">15 min</div>
+    <div>🧘 Retour au calme</div><div style="text-align:right">5 min</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; font-family:'Bebas Neue',sans-serif; font-size:18px;">TOTAL</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; text-align:right; font-family:'Bebas Neue',sans-serif; font-size:18px;">~1H30</div>
+  </div>
+</div>
+
+<div class="tip-box" style="margin-top:16px">
+  <strong>💡 Conseils post-opératoires</strong>
+  Hydrate-toi régulièrement. Préfère des charges légères à modérées — pas besoin de forcer à 100% aujourd'hui. Si tu ressens une pression, un tiraillement ou une douleur sur la cicatrice pendant n'importe quel mouvement, arrête et repose-toi. La récupération prime sur la performance.
+</div>
+
+<script>
+  function toggleDone(card) {
+    card.classList.toggle('done');
+    const allCards = document.querySelectorAll('.card');
+    const doneCards = document.querySelectorAll('.card.done');
+    const segs = document.querySelectorAll('.progress-seg');
+    const ratio = doneCards.length / allCards.length;
+    const activeCount = Math.round(ratio * segs.length);
+    segs.forEach((seg, i) => {
+      seg.classList.toggle('active', i < activeCount);
+    });
+  }
+</script>
+</body>
+</html>

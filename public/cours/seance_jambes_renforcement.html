@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séance Jambes & Renforcement — Basic Fit Saint-Égrève</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --accent: #e8ff47;
+    --red: #ff4444;
+    --grey: #1a1a1a;
+    --grey2: #2a2a2a;
+    --muted: #888;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--grey);
+    padding: 32px 24px 28px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
+  h1 a { color: inherit; text-decoration: none; }
+  h1 a:hover em { text-decoration: underline; }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .gym-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(232,255,71,0.12);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .duration-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .duration-badge span { color: var(--accent); }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 10vw, 72px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .subtitle {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 20px;
+  }
+  .progress-seg {
+    height: 4px;
+    border-radius: 2px;
+    flex: 1;
+    background: var(--grey2);
+    transition: background 0.3s;
+  }
+  .progress-seg.active { background: var(--accent); }
+
+  /* SECTIONS */
+  .section {
+    margin: 24px 16px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--accent);
+    line-height: 1;
+    opacity: 0.3;
+  }
+  .section-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .section-info p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .section-time {
+    margin-left: auto;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--muted);
+    background: var(--grey2);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--grey);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-left: 3px solid transparent;
+    transition: transform 0.15s, border-color 0.15s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card:active { transform: scale(0.98); }
+  .card.cardio-card { border-left-color: #4af; }
+  .card.warmup-card { border-left-color: #fa8; }
+  .card.strength-card { border-left-color: var(--accent); }
+  .card.rehab-card { border-left-color: #a8f; }
+  .card.done { opacity: 0.5; }
+  .card.done .card-name { text-decoration: line-through; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-cardio { background: rgba(68,170,255,0.15); }
+  .icon-warmup { background: rgba(255,170,100,0.15); }
+  .icon-strength { background: rgba(232,255,71,0.12); }
+  .icon-rehab { background: rgba(170,130,255,0.15); }
+
+  .card-body { flex: 1; }
+  .card-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .card-detail {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .badge-sets { background: rgba(232,255,71,0.15); color: var(--accent); }
+  .badge-reps { background: rgba(255,255,255,0.08); color: var(--white); }
+  .badge-rest { background: rgba(255,68,68,0.12); color: #ff8888; }
+  .badge-time { background: rgba(68,170,255,0.12); color: #7ae; }
+
+  /* CARDIO BLOCK */
+  .cardio-block {
+    background: linear-gradient(135deg, rgba(68,170,255,0.08), rgba(68,170,255,0.03));
+    border: 1px solid rgba(68,170,255,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .cardio-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #4af;
+    margin-bottom: 8px;
+  }
+  .cardio-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+  .cardio-row:last-child { border-bottom: none; }
+  .cardio-row span:first-child { color: var(--muted); }
+  .cardio-row span:last-child { font-weight: 600; color: #7ae; }
+
+  /* TIPS */
+  .tip-box {
+    background: rgba(170,130,255,0.08);
+    border: 1px solid rgba(170,130,255,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 16px 0;
+    font-size: 12px;
+    color: #c8b0ff;
+    line-height: 1.6;
+  }
+  .tip-box strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #a8f;
+  }
+
+  /* TOTAL */
+  .total-bar {
+    margin: 24px 16px 0;
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--black);
+  }
+  .total-bar span:first-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+  .total-bar span:last-child {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    height: 1px;
+    background: var(--grey2);
+    margin: 8px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← Retour</a>
+  <div class="header-top">
+    <div class="gym-tag">📍 Basic Fit — Saint-Égrève</div>
+    <div class="duration-badge"><span>~1h</span>30</div>
+  </div>
+  <h1><a href="/">JAMBES &<br><em>RENFORCEMENT</em></a></h1>
+  <div class="subtitle">Post-entorse cheville · Cardio + Musculation · Niveau intermédiaire</div>
+  <div class="progress-bar">
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+</div>
+
+<!-- TOTAL -->
+<div class="total-bar">
+  <span>🔥 DURÉE TOTALE</span>
+  <span>~1H30</span>
+</div>
+
+<!-- BLOC 1 : ÉCHAUFFEMENT -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <h2>Échauffement</h2>
+      <p>Préparer les articulations · Activation musculaire</p>
+    </div>
+    <div class="section-time">10 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🚶</div>
+      <div class="card-body">
+        <div class="card-name">Marche rapide / Vélo elliptique</div>
+        <div class="card-detail">Faible impact — idéal pour la cheville. Commencer doucement, augmenter progressivement l'intensité.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 5 min</span>
+          <span class="badge badge-rest">Intensité faible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🔄</div>
+      <div class="card-body">
+        <div class="card-name">Mobilité cheville & genoux</div>
+        <div class="card-detail">Rotations de cheville (dans les 2 sens), flexions douces genoux, montées de genoux sur place.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">2 séries</span>
+          <span class="badge badge-reps">15 rép. chaque côté</span>
+          <span class="badge badge-rest">Pas de repos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🦵</div>
+      <div class="card-body">
+        <div class="card-name">Leg swings + Hip circles</div>
+        <div class="card-detail">Balancements de jambes (avant/arrière & latéral) et rotations de hanches. Activer les fessiers et les abducteurs.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">2 séries</span>
+          <span class="badge badge-reps">12 rép. chaque côté</span>
+          <span class="badge badge-rest">Pas de repos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 2 : CARDIO -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <h2>Cardio</h2>
+      <p>Faible impact · Respecte la cheville</p>
+    </div>
+    <div class="section-time">20 MIN</div>
+  </div>
+
+  <div class="cardio-block">
+    <h3>🚴 Vélo stationnaire — Programme Intervalles</h3>
+    <div class="cardio-row"><span>0–3 min</span><span>Échauffement — résistance faible</span></div>
+    <div class="cardio-row"><span>3–5 min</span><span>Effort modéré — résistance 5/10</span></div>
+    <div class="cardio-row"><span>5–7 min</span><span>Effort soutenu — résistance 7/10</span></div>
+    <div class="cardio-row"><span>7–9 min</span><span>Récup active — résistance 3/10</span></div>
+    <div class="cardio-row"><span>9–12 min</span><span>Effort soutenu — résistance 7/10</span></div>
+    <div class="cardio-row"><span>12–15 min</span><span>Effort modéré — résistance 5/10</span></div>
+    <div class="cardio-row"><span>15–18 min</span><span>Effort soutenu — résistance 7/10</span></div>
+    <div class="cardio-row"><span>18–20 min</span><span>Retour au calme — résistance 2/10</span></div>
+  </div>
+
+  <div class="tip-box">
+    <strong>⚠️ Alternative</strong>
+    Si la cheville est sensible au vélo, remplacer par le rameur (aucune pression sur la cheville) ou la piscine de natation si disponible.
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 3 : RENFORCEMENT JAMBES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <h2>Renforcement Jambes</h2>
+      <p>Quadriceps · Ischio-jambiers · Fessiers</p>
+    </div>
+    <div class="section-time">35 MIN</div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🏋️</div>
+      <div class="card-body">
+        <div class="card-name">Leg Press machine</div>
+        <div class="card-detail">Pieds à plat, largeur d'épaules. Descendre lentement (3 sec), pousser fort. Éviter de bloquer les genoux en haut. Sécurisé pour la cheville car le pied reste stable.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🦵</div>
+      <div class="card-body">
+        <div class="card-name">Leg Extension machine</div>
+        <div class="card-detail">Isolation des quadriceps. Mouvement lent et contrôlé. Ne pas verrouiller le genou en extension. Parfait post-entorse : aucune contrainte cheville.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">💪</div>
+      <div class="card-body">
+        <div class="card-name">Leg Curl couché (ischio-jambiers)</div>
+        <div class="card-detail">Contractez bien les ischio-jambiers en fin de mouvement. Phase excentrique lente (3 sec). Ancrer les hanches sur le banc.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🍑</div>
+      <div class="card-body">
+        <div class="card-name">Hip Thrust avec barre ou banc</div>
+        <div class="card-detail">Dos sur le banc, barre sur les hanches, poussée vers le haut en contractant les fessiers. Maintenir 1 sec en haut. Supérieur au squat pour les fessiers, aucune mise en charge de la cheville.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">4 séries</span>
+          <span class="badge badge-reps">12 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 75 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card strength-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-strength">🏃</div>
+      <div class="card-body">
+        <div class="card-name">Fente avant statique (progression douce)</div>
+        <div class="card-detail">Poids du corps ou légères haltères (5–8 kg). Garder le genou arrière proche du sol. Si la cheville est encore fragile, rester sur la jambe saine devant et juste tenir la position 3 sec. Remplacer par fente latérale si douleur.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">10 rép. / jambe</span>
+          <span class="badge badge-rest">⏸ Repos 60 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 4 : RÉÉDUCATION CHEVILLE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <h2>Rééducation Cheville</h2>
+      <p>Stabilisation · Proprioception · Renforcement</p>
+    </div>
+    <div class="section-time">15 MIN</div>
+  </div>
+
+  <div class="tip-box">
+    <strong>🩺 Pourquoi ce bloc est essentiel</strong>
+    Après une entorse, les ligaments sont fragilisés et la proprioception (sens de l'équilibre) est altérée. Ce bloc permet de reconstruire la stabilité et d'éviter les récidives.
+  </div>
+
+  <div class="card rehab-card" onclick="toggleDone(this)" style="margin-top:12px">
+    <div class="card-top">
+      <div class="card-icon icon-rehab">⚖️</div>
+      <div class="card-body">
+        <div class="card-name">Équilibre unipodal (sur la cheville blessée)</div>
+        <div class="card-detail">Debout sur la jambe blessée, regard fixe devant. Progressif : yeux ouverts → yeux fermés. Sur sol stable d'abord, puis coussin/mousse si disponible en salle.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-time">⏱ 30 sec / série</span>
+          <span class="badge badge-rest">⏸ Repos 30 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rehab-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-rehab">🦶</div>
+      <div class="card-body">
+        <div class="card-name">Montées sur pointe de pieds (calf raises)</div>
+        <div class="card-detail">Les deux pieds d'abord, puis progressivement sur la jambe blessée seule. Monter lentement sur 2 sec, descendre sur 3 sec. Se tenir légèrement à un support si besoin.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép.</span>
+          <span class="badge badge-rest">⏸ Repos 45 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rehab-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-rehab">↔️</div>
+      <div class="card-body">
+        <div class="card-name">Résistance élastique — Éversion / Inversion</div>
+        <div class="card-detail">Avec un élastique de résistance légère : mouvements de la cheville vers l'extérieur (éversion) et l'intérieur (inversion). Cibler les muscles péroniers, clés de la stabilité externe.</div>
+        <div class="card-badges">
+          <span class="badge badge-sets">3 séries</span>
+          <span class="badge badge-reps">15 rép. dans chaque sens</span>
+          <span class="badge badge-rest">⏸ Repos 30 sec</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- BLOC 5 : RETOUR AU CALME -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <h2>Retour au calme</h2>
+      <p>Étirements · Récupération</p>
+    </div>
+    <div class="section-time">10 MIN</div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirements quadriceps debout</div>
+        <div class="card-detail">Tenir le pied vers les fesses, genou bas. Maintenir l'étirement sans forcer.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🧘</div>
+      <div class="card-body">
+        <div class="card-name">Étirements ischio-jambiers & fessiers</div>
+        <div class="card-detail">Assis au sol, jambe tendue devant, se pencher doucement vers l'avant. Figure 4 pour les fessiers.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 40 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card warmup-card" onclick="toggleDone(this)">
+    <div class="card-top">
+      <div class="card-icon icon-warmup">🌊</div>
+      <div class="card-body">
+        <div class="card-name">Étirement mollets & cheville douce</div>
+        <div class="card-detail">Talon au sol, pointe du pied sur un mur. Léger étirement du mollet et du tendon d'Achille. Terminer par des cercles de cheville très doux dans les deux sens.</div>
+        <div class="card-badges">
+          <span class="badge badge-time">⏱ 30 sec / côté</span>
+          <span class="badge badge-sets">2 fois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECAP -->
+<div class="total-bar" style="margin-top:24px; flex-direction: column; align-items: flex-start; gap: 10px;">
+  <span style="font-size:14px; font-weight:600; letter-spacing:0.5px;">📋 RÉCAPITULATIF</span>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; width:100%; font-family:'DM Sans',sans-serif; font-size:13px;">
+    <div>🔥 Échauffement</div><div style="text-align:right">10 min</div>
+    <div>🚴 Cardio vélo</div><div style="text-align:right">20 min</div>
+    <div>🦵 Renforcement jambes</div><div style="text-align:right">35 min</div>
+    <div>⚖️ Rééducation cheville</div><div style="text-align:right">15 min</div>
+    <div>🧘 Retour au calme</div><div style="text-align:right">10 min</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; font-family:'Bebas Neue',sans-serif; font-size:18px;">TOTAL</div>
+    <div style="border-top:1px solid rgba(0,0,0,0.2); padding-top:6px; text-align:right; font-family:'Bebas Neue',sans-serif; font-size:18px;">~1H30</div>
+  </div>
+</div>
+
+<div class="tip-box" style="margin-top:16px">
+  <strong>💡 Conseils importants</strong>
+  Hydrate-toi toutes les 15–20 min. Si douleur à la cheville pendant un exercice, stoppe et remplace. Glace 10 min après la séance si la cheville est légèrement gonflée. Consulte un kiné si la cheville est encore instable après 2–3 semaines de reprise.
+</div>
+
+<script>
+  function toggleDone(card) {
+    card.classList.toggle('done');
+    // Update progress bar
+    const allCards = document.querySelectorAll('.card');
+    const doneCards = document.querySelectorAll('.card.done');
+    const segs = document.querySelectorAll('.progress-seg');
+    const ratio = doneCards.length / allCards.length;
+    const activeCount = Math.round(ratio * segs.length);
+    segs.forEach((seg, i) => {
+      seg.classList.toggle('active', i < activeCount);
+    });
+  }
+</script>
+</body>
+</html>

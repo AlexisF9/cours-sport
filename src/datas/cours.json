@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "titre": "Jambes et renforcement musculaire",
+    "description": "Post-entorse cheville · Cardio + Musculation · Niveau intermédiaire",
+    "duree": "1h30",
+    "fichier": "cours/seance_jambes_renforcement.html"
+  },
+  {
+    "id": 2,
+    "titre": "Haut du corps",
+    "description": "Post-appendicite · Abdos protégés · Pectoraux · Dos · Épaules · Bras",
+    "duree": "1h30",
+    "fichier": "cours/seance_haut_corps.html"
+  }
+]
