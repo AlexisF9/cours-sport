@@ -15,7 +15,7 @@ const cours = coursData as CoursType[];
 <template>
   <div class="p-4">
     <h1 class="text-4xl font-bold my-6">
-      🏋🏻‍♀️Cours de <span class="text-accent">sport</span>
+      🏋🏻‍♀️ Cours de <span class="text-accent">sport</span>
     </h1>
     <ul class="space-y-4">
       <li
